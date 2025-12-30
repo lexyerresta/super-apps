@@ -1,7 +1,5 @@
-// ============================================
 // SUPER APPS - SVG ICONS LIBRARY
 // Premium icons for professional look
-// ============================================
 
 import React from 'react';
 

@@ -53,7 +53,7 @@ export default function Header() {
                                 onClick={() => setActiveCategory(category.id)}
                                 className={`${styles.navItem} ${state.activeCategory === category.id ? styles.active : ''}`}
                             >
-                                {category.label}
+                                {category.name}
                             </button>
                         ))}
                     </nav>
@@ -97,7 +97,7 @@ export default function Header() {
                                     }}
                                     className={`${styles.mobileNavItem} ${state.activeCategory === category.id ? styles.active : ''}`}
                                 >
-                                    {category.label}
+                                    {category.name}
                                 </button>
                             ))}
                         </nav>

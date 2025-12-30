@@ -4,9 +4,6 @@ import React, { createContext, useContext, useReducer, useCallback, ReactNode, u
 import type { AppState, AppCategory, MiniApp } from '@/types';
 import { MINI_APPS } from '@/config/apps.config';
 
-// ============================================
-// STATE & ACTIONS
-// ============================================
 interface AppContextState extends AppState {
     modalOpen: boolean;
     activeApp: MiniApp | null;
@@ -27,22 +24,18 @@ const initialState: AppContextState = {
     searchQuery: '',
     activeCategory: 'all',
     favorites: [],
-    theme: 'light', // Default to light mode
+    theme: 'light',
     modalOpen: false,
     activeApp: null,
     filteredApps: MINI_APPS,
 };
 
-// ============================================
-// REDUCER
-// ============================================
 function filterApps(query: string, category: AppCategory, favorites: string[]): MiniApp[] {
     return MINI_APPS.filter((app) => {
         const matchesSearch =
             app.name.toLowerCase().includes(query.toLowerCase()) ||
             app.description.toLowerCase().includes(query.toLowerCase());
 
-        // Handle favorites category
         if (category === 'favorites') {
             return matchesSearch && favorites.includes(app.id);
         }
@@ -69,7 +62,7 @@ function appReducer(state: AppContextState, action: AppAction): AppContextState 
             const favorites = state.favorites.includes(action.payload)
                 ? state.favorites.filter(id => id !== action.payload)
                 : [...state.favorites, action.payload];
-            // Re-filter if currently viewing favorites
+
             const filteredApps = state.activeCategory === 'favorites'
                 ? filterApps(state.searchQuery, state.activeCategory, favorites)
                 : state.filteredApps;
@@ -98,9 +91,6 @@ function appReducer(state: AppContextState, action: AppAction): AppContextState 
     }
 }
 
-// ============================================
-// CONTEXT
-// ============================================
 interface AppContextValue {
     state: AppContextState;
     setSearchQuery: (query: string) => void;
@@ -115,9 +105,6 @@ interface AppContextValue {
 
 const AppContext = createContext<AppContextValue | null>(null);
 
-// ============================================
-// PROVIDER
-// ============================================
 interface AppProviderProps {
     children: ReactNode;
 }
@@ -125,9 +112,7 @@ interface AppProviderProps {
 export function AppProvider({ children }: AppProviderProps) {
     const [state, dispatch] = useReducer(appReducer, initialState);
 
-    // Load preferences from localStorage on mount
     useEffect(() => {
-        // Load favorites
         const savedFavorites = localStorage.getItem('superapp_favorites');
         if (savedFavorites) {
             try {
@@ -138,8 +123,7 @@ export function AppProvider({ children }: AppProviderProps) {
             }
         }
 
-        // Load theme - default to light
-        const savedTheme = localStorage.getItem('superapp_theme') as 'light' | 'dark' | null;
+        const savedTheme = localStorage.getItem('superapp_theme') as 'dark' | 'light' | null;
         if (savedTheme) {
             dispatch({ type: 'SET_THEME', payload: savedTheme });
             document.documentElement.setAttribute('data-theme', savedTheme);
@@ -148,12 +132,10 @@ export function AppProvider({ children }: AppProviderProps) {
         }
     }, []);
 
-    // Persist favorites
     useEffect(() => {
         localStorage.setItem('superapp_favorites', JSON.stringify(state.favorites));
     }, [state.favorites]);
 
-    // Persist and apply theme
     useEffect(() => {
         localStorage.setItem('superapp_theme', state.theme);
         document.documentElement.setAttribute('data-theme', state.theme);
@@ -210,9 +192,6 @@ export function AppProvider({ children }: AppProviderProps) {
     );
 }
 
-// ============================================
-// HOOK
-// ============================================
 export function useApp(): AppContextValue {
     const context = useContext(AppContext);
     if (!context) {

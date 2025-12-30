@@ -42,8 +42,8 @@ export default function Modal({
     if (!isOpen) return null;
 
     return (
-        <div className={styles.overlay} onClick={onClose} role="dialog" aria-modal="true">
-            <div className={`${styles.modal} ${styles[size]}`} onClick={(e) => e.stopPropagation()}>
+        <div className={styles.overlay} role="dialog" aria-modal="true">
+            <div className={`${styles.modal} ${styles[size]}`}>
                 <div className={styles.glowEffect} style={{ background: gradient || 'var(--gradient-primary)' }} />
 
                 <div className={styles.modalContent}>

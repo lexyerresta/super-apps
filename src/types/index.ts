@@ -1,9 +1,7 @@
-// ============================================
 // SUPER APPS - TYPE DEFINITIONS
-// ============================================
 
 // App Category Types
-export type AppCategory = 'all' | 'favorites' | 'productivity' | 'entertainment' | 'info' | 'fun' | 'finance' | 'utility';
+export type AppCategory = 'all' | 'favorites' | 'productivity' | 'entertainment' | 'info' | 'fun' | 'finance' | 'utility' | 'design';
 
 // Badge Types
 export interface AppBadge {

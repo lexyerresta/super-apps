@@ -1,8 +1,3 @@
-// ============================================
-// SUPER APPS - MICROSERVICE LAYER
-// Organized by domain with caching strategies
-// ============================================
-
 import { ENV, CACHE_TTL } from '@/config/env.config';
 import { get, getWithSWR, prefetch } from '@/lib/http-client';
 import type {
@@ -19,9 +14,9 @@ import type {
     ExchangeRates,
 } from '@/types';
 
-// ============================================
-// WEATHER MICROSERVICE
-// ============================================
+/**
+ * Weather-related API services
+ */
 export const WeatherService = {
     async searchCity(cityName: string): Promise<GeoLocation | null> {
         const data = await get<{ results?: GeoLocation[] }>(
@@ -51,7 +46,6 @@ export const WeatherService = {
         };
     },
 
-    // Prefetch popular cities
     prefetchPopularCities(): void {
         const cities = ['Jakarta', 'Singapore', 'Tokyo', 'London', 'New York'];
         cities.forEach(city => {
@@ -60,9 +54,9 @@ export const WeatherService = {
     },
 };
 
-// ============================================
-// CRYPTO MICROSERVICE
-// ============================================
+/**
+ * Cryptocurrency API services
+ */
 export const CryptoService = {
     async getTopCryptos(limit: number = 20): Promise<CryptoData[]> {
         return getWithSWR<CryptoData[]>(
@@ -78,7 +72,6 @@ export const CryptoService = {
         );
     },
 
-    // Prefetch top cryptos on page load
     prefetchTopCryptos(): void {
         prefetch(
             `${ENV.COINGECKO}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=20&page=1&sparkline=false&price_change_percentage=24h`,
@@ -87,15 +80,14 @@ export const CryptoService = {
     },
 };
 
-// ============================================
-// QUOTES MICROSERVICE
-// ============================================
+/**
+ * Quotes API services
+ */
 export const QuotesService = {
     async getRandomQuote(): Promise<Quote> {
         try {
             return await get<Quote>(`${ENV.QUOTABLE}/random`, { ttl: 0 });
         } catch {
-            // Fallback quotes untuk offline support
             const fallbacks: Quote[] = [
                 { content: "The only way to do great work is to love what you do.", author: "Steve Jobs" },
                 { content: "Innovation distinguishes between a leader and a follower.", author: "Steve Jobs" },
@@ -117,9 +109,9 @@ export const QuotesService = {
     },
 };
 
-// ============================================
-// COUNTRIES MICROSERVICE
-// ============================================
+/**
+ * Country data API services
+ */
 export const CountriesService = {
     async getAllCountries(): Promise<Country[]> {
         return get<Country[]>(
@@ -143,7 +135,6 @@ export const CountriesService = {
         return data[0];
     },
 
-    // Prefetch all countries (good for initial load)
     prefetchCountries(): void {
         prefetch(
             `${ENV.REST_COUNTRIES}/all?fields=name,capital,region,subregion,population,flags,languages,currencies,timezones,area`,
@@ -152,14 +143,14 @@ export const CountriesService = {
     },
 };
 
-// ============================================
-// JOKES MICROSERVICE
-// ============================================
+/**
+ * Joke API services
+ */
 export const JokesService = {
     async getRandomJoke(category: string = 'Any'): Promise<Joke> {
         return get<Joke>(
             `${ENV.JOKE_API}/${category}?safe-mode`,
-            { ttl: 0 } // No cache for random jokes
+            { ttl: 0 }
         );
     },
 
@@ -168,9 +159,9 @@ export const JokesService = {
     },
 };
 
-// ============================================
-// DICTIONARY MICROSERVICE
-// ============================================
+/**
+ * Dictionary API services
+ */
 export const DictionaryService = {
     async lookupWord(word: string): Promise<DictionaryEntry[]> {
         return get<DictionaryEntry[]>(
@@ -180,9 +171,9 @@ export const DictionaryService = {
     },
 };
 
-// ============================================
-// GITHUB MICROSERVICE
-// ============================================
+/**
+ * GitHub API services
+ */
 export const GitHubService = {
     async getUser(username: string): Promise<GitHubUser> {
         return get<GitHubUser>(
@@ -199,9 +190,9 @@ export const GitHubService = {
     },
 };
 
-// ============================================
-// TRIVIA MICROSERVICE
-// ============================================
+/**
+ * Trivia API services
+ */
 export const TriviaService = {
     async getQuestions(amount: number = 10, difficulty?: string): Promise<TriviaQuestion[]> {
         const difficultyParam = difficulty ? `&difficulty=${difficulty}` : '';
@@ -213,9 +204,9 @@ export const TriviaService = {
     },
 };
 
-// ============================================
-// POKEMON MICROSERVICE
-// ============================================
+/**
+ * Pokemon API services
+ */
 export const PokemonService = {
     async getPokemon(idOrName: string | number): Promise<Pokemon> {
         return get<Pokemon>(
@@ -229,7 +220,6 @@ export const PokemonService = {
         return this.getPokemon(randomId);
     },
 
-    // Prefetch first gen pokemon
     prefetchPopularPokemon(): void {
         [1, 4, 7, 25, 150].forEach(id => {
             prefetch(`${ENV.POKEAPI}/pokemon/${id}`, CACHE_TTL.VERY_LONG);
@@ -237,9 +227,9 @@ export const PokemonService = {
     },
 };
 
-// ============================================
-// EXCHANGE RATE MICROSERVICE
-// ============================================
+/**
+ * Exchange Rate API services
+ */
 export const ExchangeRateService = {
     async getRates(base: string = 'USD'): Promise<ExchangeRates> {
         return get<ExchangeRates>(
@@ -254,9 +244,9 @@ export const ExchangeRateService = {
     },
 };
 
-// ============================================
-// MISC MICROSERVICES
-// ============================================
+/**
+ * Miscellaneous API services
+ */
 export const MiscService = {
     async getCatFact(): Promise<{ fact: string }> {
         return get<{ fact: string }>(ENV.CAT_FACTS, { ttl: 0 });
@@ -283,14 +273,12 @@ export const MiscService = {
     },
 };
 
-// ============================================
-// PREFETCH ORCHESTRATOR
-// Call this on app init to warm up cache
-// ============================================
+/**
+ * Warm up cache by prefetching critical data
+ */
 export function prefetchCriticalData(): void {
     if (typeof window === 'undefined') return;
 
-    // Use requestIdleCallback for non-blocking prefetch
     const prefetchFn = () => {
         CryptoService.prefetchTopCryptos();
         CountriesService.prefetchCountries();

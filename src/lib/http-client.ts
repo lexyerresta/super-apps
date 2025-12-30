@@ -1,7 +1,5 @@
-// ============================================
 // SUPER APPS - OPTIMIZED HTTP CLIENT
 // Best practices: Caching, Retry, Timeout, Deduplication
-// ============================================
 
 import { REQUEST_CONFIG } from '@/config/env.config';
 
@@ -22,9 +20,7 @@ interface CacheEntry<T> {
 
 const cache = new Map<string, CacheEntry<unknown>>();
 
-// ============================================
 // CORE HTTP CLIENT
-// ============================================
 export async function httpClient<T>(
     url: string,
     options: FetchOptions = {}
@@ -72,9 +68,7 @@ export async function httpClient<T>(
     }
 }
 
-// ============================================
 // OPTIMIZED GET WITH CACHING & DEDUPLICATION
-// ============================================
 export async function get<T>(
     url: string,
     options?: FetchOptions & { ttl?: number }
@@ -114,10 +108,8 @@ export async function get<T>(
     return request;
 }
 
-// ============================================
 // STALE-WHILE-REVALIDATE PATTERN
 // Returns stale data immediately, then revalidates in background
-// ============================================
 export async function getWithSWR<T>(
     url: string,
     ttl: number,
@@ -144,9 +136,7 @@ export async function getWithSWR<T>(
     return get<T>(url, { ttl });
 }
 
-// ============================================
 // BATCH REQUESTS - Parallel fetching with concurrency limit
-// ============================================
 export async function batchGet<T>(
     urls: string[],
     options?: FetchOptions & { ttl?: number; concurrency?: number }
@@ -165,9 +155,7 @@ export async function batchGet<T>(
     return results;
 }
 
-// ============================================
 // PREFETCH - Preload data in background
-// ============================================
 export function prefetch<T>(url: string, ttl: number): void {
     // Don't prefetch if already cached
     const cached = cache.get(url);
@@ -189,9 +177,7 @@ export function prefetch<T>(url: string, ttl: number): void {
     }
 }
 
-// ============================================
 // CACHE UTILITIES
-// ============================================
 export function clearCache(key?: string): void {
     if (key) {
         cache.delete(key);
@@ -210,9 +196,7 @@ export function isCached(url: string): boolean {
     return Date.now() - entry.timestamp < entry.ttl;
 }
 
-// ============================================
 // HELPER UTILITIES
-// ============================================
 function delay(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
 }

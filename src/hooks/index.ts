@@ -1,13 +1,9 @@
-// ============================================
-// SUPER APPS - CUSTOM HOOKS
-// ============================================
-
 import { useState, useEffect, useCallback, useRef } from 'react';
 import type { ApiResponse } from '@/types';
 
-// ============================================
-// useAsync - Generic async data fetching hook
-// ============================================
+/**
+ * Generic async data fetching hook
+ */
 export function useAsync<T>(
     asyncFunction: () => Promise<T>,
     dependencies: unknown[] = [],
@@ -47,9 +43,9 @@ export function useAsync<T>(
     return { ...state, execute, reset };
 }
 
-// ============================================
-// useLocalStorage - Persist state to localStorage
-// ============================================
+/**
+ * Persist state to localStorage
+ */
 export function useLocalStorage<T>(
     key: string,
     initialValue: T
@@ -87,9 +83,9 @@ export function useLocalStorage<T>(
     return [storedValue, setValue];
 }
 
-// ============================================
-// useDebounce - Debounce a value
-// ============================================
+/**
+ * Debounce a value
+ */
 export function useDebounce<T>(value: T, delay: number = 300): T {
     const [debouncedValue, setDebouncedValue] = useState<T>(value);
 
@@ -106,9 +102,9 @@ export function useDebounce<T>(value: T, delay: number = 300): T {
     return debouncedValue;
 }
 
-// ============================================
-// useInterval - Set up a recurring interval
-// ============================================
+/**
+ * Set up a recurring interval
+ */
 export function useInterval(callback: () => void, delay: number | null): void {
     const savedCallback = useRef(callback);
 
@@ -124,9 +120,9 @@ export function useInterval(callback: () => void, delay: number | null): void {
     }, [delay]);
 }
 
-// ============================================
-// useOnClickOutside - Detect clicks outside element
-// ============================================
+/**
+ * Detect clicks outside element
+ */
 export function useOnClickOutside<T extends HTMLElement>(
     ref: React.RefObject<T>,
     handler: (event: MouseEvent | TouchEvent) => void
@@ -149,9 +145,9 @@ export function useOnClickOutside<T extends HTMLElement>(
     }, [ref, handler]);
 }
 
-// ============================================
-// useCopyToClipboard - Copy text to clipboard
-// ============================================
+/**
+ * Copy text to clipboard
+ */
 export function useCopyToClipboard(): [boolean, (text: string) => Promise<void>] {
     const [copied, setCopied] = useState(false);
 
@@ -169,9 +165,9 @@ export function useCopyToClipboard(): [boolean, (text: string) => Promise<void>]
     return [copied, copy];
 }
 
-// ============================================
-// useMediaQuery - Responsive breakpoints
-// ============================================
+/**
+ * Responsive media query
+ */
 export function useMediaQuery(query: string): boolean {
     const [matches, setMatches] = useState(false);
 
@@ -192,9 +188,9 @@ export function useMediaQuery(query: string): boolean {
     return matches;
 }
 
-// ============================================
-// useToggle - Boolean toggle state
-// ============================================
+/**
+ * Boolean toggle state
+ */
 export function useToggle(initialValue: boolean = false): [boolean, () => void, (value: boolean) => void] {
     const [value, setValue] = useState(initialValue);
 
@@ -204,9 +200,9 @@ export function useToggle(initialValue: boolean = false): [boolean, () => void, 
     return [value, toggle, set];
 }
 
-// ============================================
-// useKeyPress - Detect key presses
-// ============================================
+/**
+ * Detect target key press
+ */
 export function useKeyPress(targetKey: string): boolean {
     const [keyPressed, setKeyPressed] = useState(false);
 
