@@ -1,0 +1,9 @@
+node_modules
+npm-debug.log
+uploads
+.env
+*.pdf
+*.mp3
+*.mp4
+*.avi
+*.wav

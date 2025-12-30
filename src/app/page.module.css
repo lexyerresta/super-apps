@@ -1,0 +1,355 @@
+/* ============================================
+   HOMEPAGE - CLEAN STYLE (Light/Dark Mode)
+============================================ */
+
+.main {
+  min-height: 100vh;
+  padding-bottom: 2rem;
+}
+
+/* ============================================
+   HERO SECTION
+============================================ */
+
+.hero {
+  position: relative;
+  padding: 3rem 2rem 2.5rem;
+  text-align: center;
+  overflow: hidden;
+}
+
+/* Static Background Gradient */
+.heroBackground {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.heroOrb1,
+.heroOrb2,
+.heroOrb3 {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.4;
+}
+
+.heroOrb1 {
+  width: 400px;
+  height: 400px;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.3), rgba(168, 85, 247, 0.3));
+  top: -150px;
+  left: 5%;
+}
+
+.heroOrb2 {
+  width: 300px;
+  height: 300px;
+  background: linear-gradient(135deg, rgba(6, 182, 212, 0.3), rgba(20, 184, 166, 0.3));
+  top: 60%;
+  right: 0%;
+}
+
+.heroOrb3 {
+  width: 250px;
+  height: 250px;
+  background: linear-gradient(135deg, rgba(236, 72, 153, 0.3), rgba(249, 115, 22, 0.3));
+  bottom: -100px;
+  left: 30%;
+}
+
+[data-theme="dark"] .heroOrb1,
+[data-theme="dark"] .heroOrb2,
+[data-theme="dark"] .heroOrb3 {
+  opacity: 0.5;
+}
+
+/* Hero Content */
+.heroContent {
+  position: relative;
+  max-width: 700px;
+  margin: 0 auto;
+  z-index: 1;
+}
+
+.heroBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--glass-border);
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  animation: slideUp 0.4s ease 0.1s backwards;
+}
+
+.heroBadge svg {
+  color: var(--accent-yellow);
+}
+
+.heroTitle {
+  font-size: clamp(2.5rem, 7vw, 4rem);
+  font-weight: 900;
+  line-height: 1;
+  margin-bottom: 1.25rem;
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
+  animation: slideUp 0.4s ease 0.15s backwards;
+}
+
+.heroHighlight {
+  background: linear-gradient(135deg,
+      var(--accent-pink) 0%,
+      var(--accent-orange) 25%,
+      var(--accent-yellow) 50%,
+      var(--accent-green) 75%,
+      var(--accent-cyan) 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 4s ease infinite;
+}
+
+@keyframes gradientShift {
+
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.heroSubtitle {
+  display: block;
+  font-size: 0.5em;
+  color: var(--text-secondary);
+  font-weight: 700;
+  margin-top: 0.25em;
+}
+
+.heroDescription {
+  font-size: 1.05rem;
+  color: var(--text-tertiary);
+  max-width: 480px;
+  margin: 0 auto 2rem;
+  line-height: 1.6;
+  animation: slideUp 0.4s ease 0.2s backwards;
+}
+
+/* Hero Stats */
+.heroStats {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  animation: slideUp 0.4s ease 0.25s backwards;
+}
+
+.stat {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1.25rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.stat:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.statIcon {
+  width: 44px;
+  height: 44px;
+  background: var(--bg-tertiary);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.statInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.statValue {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  line-height: 1;
+}
+
+.statLabel {
+  font-size: 0.7rem;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+/* ============================================
+   APPS SECTION
+============================================ */
+
+.appsSection {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.appsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.25rem;
+}
+
+/* Empty State */
+.emptyState {
+  text-align: center;
+  padding: 5rem 2rem;
+}
+
+.emptyIcon {
+  width: 100px;
+  height: 100px;
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(168, 85, 247, 0.1));
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-radius: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  font-size: 3rem;
+}
+
+.emptyState h3 {
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.emptyState p {
+  color: var(--text-tertiary);
+}
+
+/* ============================================
+   FOOTER
+============================================ */
+
+.footer {
+  text-align: center;
+  padding: 3rem 2rem;
+  margin-top: 3rem;
+  border-top: 1px solid var(--glass-border);
+}
+
+.footerContent {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.footerMain {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin: 0 0 0.5rem;
+}
+
+.footerSub {
+  color: var(--text-tertiary);
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+/* ============================================
+   RESPONSIVE
+============================================ */
+
+@media (max-width: 768px) {
+  .hero {
+    padding: 2.5rem 1.5rem 2rem;
+  }
+
+  .heroStats {
+    flex-direction: column;
+    gap: 0.75rem;
+    max-width: 280px;
+    margin: 0 auto;
+  }
+
+  .stat {
+    justify-content: flex-start;
+  }
+
+  .appsSection {
+    padding: 0 1rem;
+  }
+
+  .appsGrid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .heroOrb1 {
+    width: 200px;
+    height: 200px;
+  }
+
+  .heroOrb2 {
+    width: 150px;
+    height: 150px;
+  }
+
+  .heroOrb3 {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero {
+    padding: 2rem 1rem 1.5rem;
+  }
+
+  .heroDescription {
+    font-size: 0.95rem;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .appsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1400px) {
+  .appsGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

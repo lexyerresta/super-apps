@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  # API Gateway
+  api-gateway:
+    build: ./backend/api-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      - PDF_SERVICE_URL=http://pdf-service:3001
+      - MEDIA_SERVICE_URL=http://media-service:3002
+    depends_on:
+      - pdf-service
+      - media-service
+    networks:
+      - app-network
+
+  # Frontend
+  web:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_GATEWAY_URL=http://localhost:8080
+      - NEXT_PUBLIC_PDF_SERVICE_URL=http://localhost:8080/api/pdf
+      - NEXT_PUBLIC_MEDIA_SERVICE_URL=http://localhost:8080/api/media
+    depends_on:
+      - api-gateway
+    networks:
+      - app-network
+
+  # PDF Microservice
+  pdf-service:
+    build: ./backend/pdf-service
+    ports:
+      - "3001:3001"
+    volumes:
+      - pdf-uploads:/app/uploads
+    networks:
+      - app-network
+
+  # Media Microservice
+  media-service:
+    build: ./backend/media-service
+    ports:
+      - "3002:3002"
+    volumes:
+      - media-uploads:/app/uploads
+    networks:
+      - app-network
+
+volumes:
+  pdf-uploads:
+  media-uploads:
+
+networks:
+  app-network:
+    driver: bridge

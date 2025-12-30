@@ -1,0 +1,8 @@
+{
+    "version": 2,
+    "build": {
+        "env": {
+            "NEXT_PUBLIC_PDF_SERVICE_URL": "/api/pdf"
+        }
+    }
+}

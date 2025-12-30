@@ -1,0 +1,32 @@
+// Quick batch to add to apps.config.ts - Insert after expense-tracker
+
+    {
+        id: 'random-color',
+        name: 'Random Color',
+        description: 'Generate random colors in HEX, RGB, or HSL',
+        icon: 'palette',
+        gradient: 'linear-gradient(135deg, #ec4899, #8b5cf6)',
+        category: 'utility',
+        badge: { type: 'new', text: 'New' },
+        component: 'RandomColorApp',
+    },
+    {
+        id: 'dice-roller',
+        name: 'Dice Roller',
+        description: 'Roll multiple dice with customizable sides',
+        icon: 'dices',
+        gradient: 'linear-gradient(135deg, #f59e0b, #ef4444)',
+        category: 'fun',
+        badge: { type: 'new', text: 'New' },
+        component: 'DiceRollerApp',
+    },
+    {
+        id: 'reaction-time',
+        name: 'Reaction Time',
+        description: 'Test your reaction speed with statistics',
+        icon: 'activity',
+        gradient: 'linear-gradient(135deg, #10b981, #06b6d4)',
+        category: 'fun',
+        badge: { type: 'new', text: 'New' },
+        component: 'ReactionTimeApp',
+    },
