@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import styles from './MiniApps.module.css';
-import { TrendingUp, TrendingDown, DollarSign, Search, RefreshCw, BarChart2, Briefcase, Activity, ExternalLink } from 'lucide-react';
+import { TrendingUp, TrendingDown, Search, RefreshCw, BarChart2, Activity, ExternalLink } from 'lucide-react';
 
 export default function StockMarketApp() {
     const [stocks, setStocks] = useState<any[]>([]);
@@ -10,6 +10,9 @@ export default function StockMarketApp() {
 
     // Common stocks to display
     const symbols = ['AAPL', 'GOOGL', 'MSFT', 'AMZN', 'TSLA', 'META', 'NVDA', 'JPM', 'NFLX', 'AMD', 'INTC', 'DIS'];
+
+    // Finnhub API Key (Public Sandbox/Free Tier)
+    const API_KEY = 'cj0v19pr01qg4t1u8b90cj0v19pr01qg4t1u8b9g';
 
     const getStockName = (symbol: string) => {
         const names: Record<string, string> = {
@@ -32,28 +35,40 @@ export default function StockMarketApp() {
     const fetchStocks = async () => {
         setLoading(true);
         try {
-            // Using mock data for reliable demo experience
-            // In a real app, this would hit Alpha Vantage or Yahoo Finance API
-            const mockStocks = symbols.map(symbol => {
-                const basePrice = Math.random() * 800 + 50;
-                const change = (Math.random() * 20 - 10);
-                const changePercent = (Math.random() * 8 - 4);
+            // Fetch real data from Finnhub for each symbol
+            const requests = symbols.map(async (symbol) => {
+                try {
+                    const response = await fetch(`https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${API_KEY}`);
+                    const data = await response.json();
 
-                return {
-                    symbol,
-                    name: getStockName(symbol),
-                    price: basePrice.toFixed(2),
-                    change: change.toFixed(2),
-                    changePercent: changePercent.toFixed(2),
-                    volume: Math.floor(Math.random() * 50000000) + 1000000,
-                    high: (basePrice + Math.random() * 10).toFixed(2),
-                    low: (basePrice - Math.random() * 10).toFixed(2),
-                    marketCap: (Math.random() * 2 + 0.1).toFixed(1) + 'T'
-                };
+                    // Finnhub returns: c: Current price, d: Change, dp: Percent change, h: High, l: Low, o: Open, pc: Previous close
+                    return {
+                        symbol,
+                        name: getStockName(symbol),
+                        price: data.c ? data.c.toFixed(2) : '0.00',
+                        change: data.d ? data.d.toFixed(2) : '0.00',
+                        changePercent: data.dp ? data.dp.toFixed(2) : '0.00',
+                        volume: 0, // Volume not available in free quote endpoint
+                        high: data.h ? data.h.toFixed(2) : '0.00',
+                        low: data.l ? data.l.toFixed(2) : '0.00',
+                        previousClose: data.pc
+                    };
+                } catch (err) {
+                    console.error(`Failed to fetch ${symbol}`, err);
+                    return null;
+                }
             });
-            setStocks(mockStocks);
+
+            const results = await Promise.all(requests);
+
+            // Filter out failed requests (nulls)
+            const validStocks = results.filter(stock => stock !== null && stock.price !== '0.00');
+
+            if (validStocks.length > 0) {
+                setStocks(validStocks);
+            }
         } catch (error) {
-            console.error('Failed to fetch stocks:', error);
+            console.error('Error fetching stock data:', error);
         } finally {
             setLoading(false);
         }
@@ -208,7 +223,7 @@ export default function StockMarketApp() {
                                     display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '2px'
                                 }}>
                                     {isPositive ? <TrendingUp size={10} /> : <TrendingDown size={10} />}
-                                    {Math.abs(stock.changePercent).toFixed(2)}%
+                                    {Math.abs(parseFloat(stock.changePercent)).toFixed(2)}%
                                 </div>
                             </div>
 
@@ -224,7 +239,7 @@ export default function StockMarketApp() {
                 textAlign: 'center', fontSize: '0.7rem', color: 'var(--text-tertiary)',
                 borderTop: '1px solid var(--glass-border)', flexShrink: 0
             }}>
-                Data deferred 15 mins • Click for details on Yahoo Finance <ExternalLink size={8} style={{ display: 'inline' }} />
+                Real-time data provided by Finnhub <ExternalLink size={8} style={{ display: 'inline' }} />
             </div>
         </div>
     );

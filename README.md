@@ -107,7 +107,7 @@ All apps use FREE open-source & public APIs:
 - **Frankfurter API** - Currency exchange rates
 - **NPM Registry** - NPM package search
 - **GitHub API** - User and repository search
-- **Market Data** - Simulated stock prices (Index/Demo)
+- **Finnhub API** - Real-time stock market data
 
 ## Deployment
 

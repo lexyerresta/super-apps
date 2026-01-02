@@ -144,22 +144,6 @@ export const CountriesService = {
 };
 
 /**
- * Joke API services
- */
-export const JokesService = {
-    async getRandomJoke(category: string = 'Any'): Promise<Joke> {
-        return get<Joke>(
-            `${ENV.JOKE_API}/${category}?safe-mode`,
-            { ttl: 0 }
-        );
-    },
-
-    async getProgrammingJoke(): Promise<Joke> {
-        return this.getRandomJoke('Programming');
-    },
-};
-
-/**
  * Dictionary API services
  */
 export const DictionaryService = {
@@ -191,43 +175,6 @@ export const GitHubService = {
 };
 
 /**
- * Trivia API services
- */
-export const TriviaService = {
-    async getQuestions(amount: number = 10, difficulty?: string): Promise<TriviaQuestion[]> {
-        const difficultyParam = difficulty ? `&difficulty=${difficulty}` : '';
-        const data = await get<{ results: TriviaQuestion[] }>(
-            `${ENV.OPEN_TRIVIA}?amount=${amount}${difficultyParam}&type=multiple`,
-            { ttl: 0 }
-        );
-        return data.results;
-    },
-};
-
-/**
- * Pokemon API services
- */
-export const PokemonService = {
-    async getPokemon(idOrName: string | number): Promise<Pokemon> {
-        return get<Pokemon>(
-            `${ENV.POKEAPI}/pokemon/${idOrName}`,
-            { ttl: CACHE_TTL.VERY_LONG }
-        );
-    },
-
-    async getRandomPokemon(): Promise<Pokemon> {
-        const randomId = Math.floor(Math.random() * 898) + 1;
-        return this.getPokemon(randomId);
-    },
-
-    prefetchPopularPokemon(): void {
-        [1, 4, 7, 25, 150].forEach(id => {
-            prefetch(`${ENV.POKEAPI}/pokemon/${id}`, CACHE_TTL.VERY_LONG);
-        });
-    },
-};
-
-/**
  * Exchange Rate API services
  */
 export const ExchangeRateService = {
@@ -253,7 +200,6 @@ export function prefetchCriticalData(): void {
     const prefetchFn = () => {
         CryptoService.prefetchTopCryptos();
         CountriesService.prefetchCountries();
-        PokemonService.prefetchPopularPokemon();
         WeatherService.prefetchPopularCities();
     };
 
