@@ -205,26 +205,30 @@ export default function CryptoApp() {
                             onClick={() => window.open(`https://www.coingecko.com/en/coins/${coin.id}`, '_blank')}
                             style={{
                                 display: 'grid',
-                                gridTemplateColumns: '30px 1fr 60px 80px', // simplified grid
-                                alignItems: 'center', gap: '0.75rem',
-                                padding: '0.75rem',
+                                gridTemplateColumns: '30px 30px 1fr 60px 80px 30px', // Rank | Icon | Name | Sparkline | Price | Star
+                                alignItems: 'center', gap: '0.5rem',
+                                padding: '0.75rem 0.5rem',
                                 background: 'var(--bg-secondary)',
                                 borderRadius: '12px',
                                 border: '1px solid var(--glass-border)',
                                 cursor: 'pointer', position: 'relative'
                             }}
                         >
-                            <img src={coin.image} alt={coin.symbol} style={{ width: '30px', height: '30px', borderRadius: '50%' }} />
+                            {/* Rank */}
+                            <div style={{ fontSize: '0.8rem', color: 'var(--text-tertiary)', textAlign: 'center', fontWeight: 600 }}>
+                                #{coin.market_cap_rank}
+                            </div>
+
+                            <img src={coin.image} alt={coin.symbol} style={{ width: '28px', height: '28px', borderRadius: '50%' }} />
 
                             <div style={{ minWidth: 0 }}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                                     <span style={{ fontWeight: 700, color: 'var(--text-primary)' }}>{coin.symbol.toUpperCase()}</span>
-                                    <span style={{ fontSize: '0.8rem', color: isPositive ? 'var(--accent-green)' : 'var(--accent-red)' }}>
+                                </div>
+                                <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                                    <span style={{ color: isPositive ? 'var(--accent-green)' : 'var(--accent-red)' }}>
                                         {isPositive ? '+' : ''}{coin.price_change_percentage_24h.toFixed(2)}%
                                     </span>
-                                </div>
-                                <div style={{ fontSize: '0.75rem', color: 'var(--text-tertiary)', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                                    Vol: ${(coin.total_volume / 1e6).toFixed(1)}M
                                 </div>
                             </div>
 
@@ -238,26 +242,26 @@ export default function CryptoApp() {
 
                             {/* Price */}
                             <div style={{ textAlign: 'right' }}>
-                                <div style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--text-primary)' }}>
-                                    ${coin.current_price < 1
-                                        ? coin.current_price.toFixed(6)
-                                        : coin.current_price.toLocaleString()}
+                                <div style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--text-primary)' }}>
+                                    {coin.current_price < 1
+                                        ? `$${coin.current_price.toFixed(4)}`
+                                        : `$${coin.current_price.toLocaleString()}`}
                                 </div>
-                                <div style={{ fontSize: '0.7rem', color: 'var(--text-tertiary)' }}>
-                                    MCap ${(coin.market_cap / 1e9).toFixed(1)}B
+                                <div style={{ fontSize: '0.65rem', color: 'var(--text-tertiary)' }}>
+                                    Vol ${(coin.total_volume / 1e6).toFixed(0)}M
                                 </div>
                             </div>
 
-                            {/* Watchlist Star Absolute */}
+                            {/* Watchlist Star (Dedicated Column) */}
                             <button
                                 onClick={(e) => toggleWatchlist(e, coin.id)}
                                 style={{
-                                    position: 'absolute', top: '8px', right: '8px',
                                     padding: '4px', background: 'transparent', border: 'none', cursor: 'pointer',
-                                    color: watchlist.includes(coin.id) ? 'var(--accent-yellow)' : 'transparent',
+                                    color: watchlist.includes(coin.id) ? 'var(--accent-yellow)' : 'var(--glass-border)',
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center'
                                 }}
                             >
-                                <Star size={12} fill="currentColor" stroke={watchlist.includes(coin.id) ? 'none' : 'var(--text-tertiary)'} />
+                                <Star size={18} fill={watchlist.includes(coin.id) ? 'currentColor' : 'none'} />
                             </button>
                         </div>
                     );
