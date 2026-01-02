@@ -105,8 +105,9 @@ All apps use FREE open-source & public APIs:
 - **Open-Meteo API** - Weather forecasts (No key required)
 - **CoinGecko API** - Cryptocurrency market data
 - **Frankfurter API** - Currency exchange rates
-- **NPP Registry** - NPM package search
+- **NPM Registry** - NPM package search
 - **GitHub API** - User and repository search
+- **Market Data** - Simulated stock prices (Index/Demo)
 
 ## Deployment
 
