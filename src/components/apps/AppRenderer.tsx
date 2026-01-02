@@ -8,13 +8,9 @@ import { Loader2 } from 'lucide-react';
 const WeatherApp = lazy(() => import('./WeatherApp'));
 const CryptoApp = lazy(() => import('./CryptoApp'));
 const QuotesApp = lazy(() => import('./QuotesApp'));
-const JokesApp = lazy(() => import('./JokesApp'));
 const CountriesApp = lazy(() => import('./CountriesApp'));
 
-const PokemonApp = lazy(() => import('./PokemonApp'));
 const CurrencyApp = lazy(() => import('./CurrencyApp'));
-const DogGalleryApp = lazy(() => import('./DogGalleryApp'));
-const CatFactsApp = lazy(() => import('./CatFactsApp'));
 const DictionaryApp = lazy(() => import('./DictionaryApp'));
 const GitHubApp = lazy(() => import('./GitHubApp'));
 const ProductSearchApp = lazy(() => import('./ProductSearchApp'));
@@ -32,13 +28,9 @@ const appComponents: Record<string, React.LazyExoticComponent<React.ComponentTyp
     WeatherApp,
     CryptoApp,
     QuotesApp,
-    JokesApp,
     CountriesApp,
 
-    PokemonApp,
     CurrencyApp,
-    DogGalleryApp,
-    CatFactsApp,
     DictionaryApp,
     GitHubApp,
 
@@ -50,6 +42,7 @@ const appComponents: Record<string, React.LazyExoticComponent<React.ComponentTyp
     BookSearchApp,
     WikipediaApp,
     DevCommunityApp,
+
 
 
 };
