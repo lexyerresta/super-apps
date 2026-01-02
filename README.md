@@ -1,17 +1,17 @@
 # SuperApps - Premium API-Powered Mini Apps
 
-A modern, high-performance Next.js platform featuring 14 curated "Super Apps" powered by real-time open-source APIs. Designed with a premium glassmorphism UI/UX, focusing on quality over quantity.
+A modern, high-performance Next.js platform featuring 13 curated "Super Apps" powered by real-time open-source APIs. Designed with a premium glassmorphism UI/UX, focusing on quality over quantity.
 
 ![Next.js](https://img.shields.io/badge/Next.js-16-black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
-![Apps](https://img.shields.io/badge/apps-14-success)
+![Apps](https://img.shields.io/badge/apps-13-success)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
 ## Features
 
-- **14 Premium Super Apps** - Curated selection of high-utility tools
-- **Real-Time Data** - Live stock markets, crypto prices, and weather
+- **13 Premium Super Apps** - Curated selection of high-utility tools
+- **Real-Time Data** - Live crypto prices and weather
 - **Open API Powered** - Leveraging the best public APIs available
 - **Glassmorphism UI** - Stunning modern interface with advanced micro-interactions
 - **Lightning Fast** - Built with Next.js 16 + Turbopack
@@ -30,10 +30,9 @@ A modern, high-performance Next.js platform featuring 14 curated "Super Apps" po
 - **World Atlas** - Detailed country data & demographics
 - **Daily Quotes** - Wisdom & inspiration generator
 
-### 💹 Finance & Data (6 apps)
+### 💹 Finance & Data (5 apps)
 - **Weather** - Accurate forecasts & live conditions
 - **Crypto Tracker** - Real-time cryptocurrency market data
-- **Stock Market** - Live global stock exchange data
 - **Currency Exchange** - Instant currency conversion rates
 - **NPM Search** - Package discovery for developers
 - **GitHub Finder** - User profile & repository search
@@ -157,4 +156,4 @@ This project is licensed under the MIT License.
 
 **Made with care**
 
-*39 Apps. One Platform. Powered by Open Source.*
+*13 Apps. One Platform. Powered by Open Source.*

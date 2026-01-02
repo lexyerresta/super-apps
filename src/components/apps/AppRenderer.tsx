@@ -14,7 +14,6 @@ const CurrencyApp = lazy(() => import('./CurrencyApp'));
 const DictionaryApp = lazy(() => import('./DictionaryApp'));
 const GitHubApp = lazy(() => import('./GitHubApp'));
 const ProductSearchApp = lazy(() => import('./ProductSearchApp'));
-const StockMarketApp = lazy(() => import('./StockMarketApp'));
 const NPMSearchApp = lazy(() => import('./NPMSearchApp'));
 const NewsApp = lazy(() => import('./NewsApp'));
 const MovieDatabaseApp = lazy(() => import('./MovieDatabaseApp'));
@@ -35,7 +34,6 @@ const appComponents: Record<string, React.LazyExoticComponent<React.ComponentTyp
     GitHubApp,
 
     ProductSearchApp,
-    StockMarketApp,
     NPMSearchApp,
     NewsApp,
     MovieDatabaseApp,

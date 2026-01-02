@@ -103,16 +103,6 @@ export const MINI_APPS: MiniApp[] = [
         component: 'CryptoApp',
     },
     {
-        id: 'stock-market',
-        name: 'Stock Market',
-        description: 'Live stock prices and market data',
-        icon: 'trending-up',
-        gradient: 'linear-gradient(135deg, #10b981, #14b8a6)',
-        category: 'finance',
-        badge: { type: 'hot', text: 'Hot' },
-        component: 'StockMarketApp',
-    },
-    {
         id: 'currency',
         name: 'Currency Exchange',
         description: 'Live exchange rates for 150+ currencies',
