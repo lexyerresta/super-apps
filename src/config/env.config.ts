@@ -7,19 +7,10 @@ export const ENV = {
     REST_COUNTRIES: process.env.NEXT_PUBLIC_API_REST_COUNTRIES || 'https://restcountries.com/v3.1',
     JOKE_API: process.env.NEXT_PUBLIC_API_JOKE || 'https://v2.jokeapi.dev/joke',
     DICTIONARY: process.env.NEXT_PUBLIC_API_DICTIONARY || 'https://api.dictionaryapi.dev/api/v2/entries/en',
-    RANDOM_USER: process.env.NEXT_PUBLIC_API_RANDOM_USER || 'https://randomuser.me/api',
     GITHUB: process.env.NEXT_PUBLIC_API_GITHUB || 'https://api.github.com',
     OPEN_TRIVIA: process.env.NEXT_PUBLIC_API_OPEN_TRIVIA || 'https://opentdb.com/api.php',
     POKEAPI: process.env.NEXT_PUBLIC_API_POKEAPI || 'https://pokeapi.co/api/v2',
     EXCHANGE_RATE: process.env.NEXT_PUBLIC_API_EXCHANGE_RATE || 'https://api.exchangerate-api.com/v4/latest',
-    CAT_FACTS: process.env.NEXT_PUBLIC_API_CAT_FACTS || 'https://catfact.ninja/fact',
-    DOG_API: process.env.NEXT_PUBLIC_API_DOG || 'https://dog.ceo/api/breeds/image/random',
-    ADVICE_API: process.env.NEXT_PUBLIC_API_ADVICE || 'https://api.adviceslip.slip/advice',
-    BORED_API: process.env.NEXT_PUBLIC_API_BORED || 'https://www.boredapi.com/api/activity',
-    QR_CODE: process.env.NEXT_PUBLIC_API_QR_CODE || 'https://api.qrserver.com/v1/create-qr-code',
-    IP_API: process.env.NEXT_PUBLIC_API_IP || 'https://ipapi.co/json',
-    COLOR_API: process.env.NEXT_PUBLIC_API_COLOR || 'https://www.thecolorapi.com',
-    NASA_API_KEY: process.env.NEXT_PUBLIC_NASA_API_KEY || 'mCfG5Sv31Ehv0KLKwkCfV2PPYx3N4CxvYtd7hYQ6',
 } as const;
 
 // Cache TTL configuration (in milliseconds)

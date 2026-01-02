@@ -1,78 +1,47 @@
-# SuperApps - Open Source API-Powered Mini Apps
+# SuperApps - Premium API-Powered Mini Apps
 
-A modern Next.js platform featuring 39 powerful mini-applications powered by free open-source APIs. From productivity tools to file converters, developer utilities to entertainment - all in one place.
+A modern, high-performance Next.js platform featuring 17 curated "Super Apps" powered by real-time open-source APIs. Designed with a premium glassmorphism UI/UX, focusing on quality over quantity.
 
 ![Next.js](https://img.shields.io/badge/Next.js-16-black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
-![Apps](https://img.shields.io/badge/apps-39-success)
+![Apps](https://img.shields.io/badge/apps-17-success)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
 ## Features
 
-- **39 Premium Apps** - All powered by free open-source APIs
+- **17 Premium Super Apps** - Curated selection of high-utility tools
+- **Real-Time Data** - Live stock markets, crypto prices, and weather
+- **Open API Powered** - Leveraging the best public APIs available
+- **Glassmorphism UI** - Stunning modern interface with advanced micro-interactions
 - **Lightning Fast** - Built with Next.js 16 + Turbopack
-- **Fully Responsive** - Works seamlessly on all devices
-- **Modern UI/UX** - Clean, beautiful, and intuitive interface
-- **Smart Search** - Find apps instantly with real-time search
-- **Data Persistence** - LocalStorage support for user data
-- **Optimized Performance** - Lazy loading and code splitting
-- **Dark/Light Theme** - Eye-friendly themes for all preferences
+- **Fully Responsive** - Seamless experience mobile-to-desktop
+- **Data Persistence** - Trusted local storage for your settings
 
-## App Categories
+## Super App Collection
 
-### Info & Content (9 apps)
-- **News** - Latest headlines from GNews API
-- **Movies** - Search movies & TV shows via OMDB API
-- **Books** - Browse millions of books from Open Library
-- **Wikipedia** - Instant Wikipedia article search
-- **Reddit** - Browse posts and subreddits
-- **Dictionary** - Word definitions with audio pronunciation
-- **Countries** - Explore 250+ countries with detailed info
-- **Quotes** - Daily inspirational quotes
-- **Product Search** - Browse products via Fake Store API
+### 📚 Info & Knowledge (8 apps)
+- **News Headlines** - Real-time global news coverage
+- **Movie Database** - Explore moves & TV shows (TMDB)
+- **Book Search** - Library of millions of books (Open Library)
+- **Wikipedia** - Instant encyclopedia search
+- **DEV Community** - Tech articles for developers
+- **Dictionary** - Definitions, phonetics, and audio
+- **World Atlas** - Detailed country data & demographics
+- **Daily Quotes** - Wisdom & inspiration generator
 
-### Finance & Data (5 apps)
-- **Weather** - Real-time forecasts from OpenWeather API
-- **Crypto Tracker** - Live prices for top 20 cryptocurrencies
-- **Stock Market** - Live stock prices and market data
-- **Currency Exchange** - Real-time rates for 150+ currencies
-- **NPM Search** - Search and explore NPM packages
+### 💹 Finance & Data (6 apps)
+- **Weather** - Accurate forecasts & live conditions
+- **Crypto Tracker** - Real-time cryptocurrency market data
+- **Stock Market** - Live global stock exchange data
+- **Currency Exchange** - Instant currency conversion rates
+- **NPM Search** - Package discovery for developers
+- **GitHub Finder** - User profile & repository search
 
-### Developer Tools (8 apps)
-- **API Tester** - Test REST APIs with custom headers
-- **GitHub Finder** - Search users and repositories
-- **JWT Decoder** - Decode and validate JWT tokens
-- **Timestamp Converter** - Unix to human readable time
-- **Base64 Encoder** - Encode & decode Base64 strings
-- **JSON Formatter** - Format and validate JSON data
-- **Hash Generator** - Generate MD5, SHA1, SHA256 hashes
-- **UUID Generator** - Create unique identifiers (UUID v4)
-
-### File Converters (5 apps)
-- **Image Converter** - Convert between image formats
-- **Audio Converter** - Convert audio files
-- **Video Converter** - Convert video files
-- **Document Converter** - Convert document formats
-- **PDF Tools** - Merge, split & compress PDFs
-
-### Productivity (3 apps)
-- **Todo List** - Task management with categories & priorities
-- **Expense Tracker** - Track income/expenses with charts
-- **Notes** - Quick note-taking with local storage
-
-### Fun & Entertainment (5 apps)
-- **Jokes** - Programming & general jokes
-- **Cat Facts** - Random cat facts from API
-- **Dog Gallery** - Random dog images
-- **Trivia Quiz** - Test your knowledge
-- **Pokedex** - Explore 1000+ Pokemon with stats
-
-### Utilities (4 apps)
-- **Password Generator** - Generate secure passwords
-- **QR Code Generator** - Create QR codes from text
-- **IP Lookup** - Get IP address information
-- **Regex Tester** - Test regular expressions
+### 🎮 Fun & Entertainment (3 apps)
+- **Random Jokes** - Programming & general humor
+- **Trivia Quiz** - Challenger your knowledge
+- **Pokédex** - Comprehensive Pokémon database
 
 ## Quick Start
 

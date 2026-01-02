@@ -245,35 +245,6 @@ export const ExchangeRateService = {
 };
 
 /**
- * Miscellaneous API services
- */
-export const MiscService = {
-    async getCatFact(): Promise<{ fact: string }> {
-        return get<{ fact: string }>(ENV.CAT_FACTS, { ttl: 0 });
-    },
-
-    async getRandomDog(): Promise<{ message: string; status: string }> {
-        return get<{ message: string; status: string }>(ENV.DOG_API, { ttl: 0 });
-    },
-
-    async getAdvice(): Promise<{ slip: { advice: string } }> {
-        return get<{ slip: { advice: string } }>(ENV.ADVICE_API, { ttl: 0 });
-    },
-
-    async getActivity(): Promise<{ activity: string; type: string; participants: number }> {
-        return get<{ activity: string; type: string; participants: number }>(ENV.BORED_API, { ttl: 0 });
-    },
-
-    async getIPInfo(): Promise<{ ip: string; city: string; country_name: string; latitude: number; longitude: number }> {
-        return get(ENV.IP_API, { ttl: CACHE_TTL.LONG });
-    },
-
-    generateQRCode(text: string, size: number = 200): string {
-        return `${ENV.QR_CODE}/?size=${size}x${size}&data=${encodeURIComponent(text)}`;
-    },
-};
-
-/**
  * Warm up cache by prefetching critical data
  */
 export function prefetchCriticalData(): void {

@@ -5,7 +5,7 @@ import styles from './MiniApps.module.css';
 import { useAsync, useDebounce, useInterval, useLocalStorage } from '@/hooks';
 import { CryptoService } from '@/services/api.service';
 import type { CryptoData } from '@/types';
-import { Search, RefreshCw, TrendingUp, TrendingDown, AlertCircle, Star, BarChart3, DollarSign, Activity, ArrowUpDown } from 'lucide-react';
+import { Search, RefreshCw, TrendingUp, TrendingDown, AlertCircle, Star, BarChart3, DollarSign, Activity, ArrowUpDown, ExternalLink } from 'lucide-react';
 
 type SortField = 'rank' | 'price' | 'change_24h' | 'market_cap';
 type SortDirection = 'asc' | 'desc';
@@ -16,11 +16,11 @@ export default function CryptoApp() {
     const [sortField, setSortField] = useState<SortField>('rank');
     const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
     const [showWatchlistOnly, setShowWatchlistOnly] = useState(false);
-    const [watchlist, setWatchlist] = useLocalStorage<string[]>('crypto_watchlist', []);
+    const [watchlist, setWatchlist] = useLocalStorage<string[]>('crypto_watchlist', []); // Store IDs
     const debouncedSearch = useDebounce(searchTerm, 300);
 
     const { data: cryptos, loading, error, execute } = useAsync<CryptoData[]>(
-        () => CryptoService.getTopCryptos(30),
+        () => CryptoService.getTopCryptos(50), // Increased fetch limit
         []
     );
 
@@ -32,8 +32,14 @@ export default function CryptoApp() {
         setTimeout(() => setIsRefreshing(false), 500);
     };
 
-    const toggleWatchlist = (id: string) => {
+    const toggleWatchlist = (e: React.MouseEvent, id: string) => {
+        e.stopPropagation(); // Prevent row click
         setWatchlist(watchlist.includes(id) ? watchlist.filter(w => w !== id) : [...watchlist, id]);
+    };
+
+    const handleItemClick = (id: string) => {
+        // Redirect to CoinGecko for details
+        window.open(`https://www.coingecko.com/en/coins/${id}`, '_blank');
     };
 
     const handleSort = (field: SortField) => {
@@ -48,15 +54,18 @@ export default function CryptoApp() {
     const filteredCryptos = useMemo(() => {
         if (!cryptos) return [];
         let result = cryptos;
+
         if (debouncedSearch) {
             result = result.filter((c) =>
                 c.name.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
                 c.symbol.toLowerCase().includes(debouncedSearch.toLowerCase())
             );
         }
+
         if (showWatchlistOnly) {
             result = result.filter(c => watchlist.includes(c.id));
         }
+
         return [...result].sort((a, b) => {
             let cmp = 0;
             if (sortField === 'rank') cmp = a.market_cap_rank - b.market_cap_rank;
@@ -80,57 +89,211 @@ export default function CryptoApp() {
     }, [cryptos]);
 
     const SortBtn = ({ field, label }: { field: SortField; label: string }) => (
-        <button onClick={() => handleSort(field)} style={{ display: 'flex', alignItems: 'center', gap: '0.2rem', padding: '0.35rem 0.5rem', background: sortField === field ? 'var(--primary)' : 'var(--bg-secondary)', border: '1px solid var(--glass-border)', borderRadius: '6px', color: sortField === field ? 'white' : 'var(--text-tertiary)', fontSize: '0.65rem', fontWeight: 600, cursor: 'pointer' }}>
-            {label} {sortField === field && <ArrowUpDown size={10} style={{ transform: sortDirection === 'desc' ? 'rotate(180deg)' : 'none' }} />}
+        <button
+            onClick={() => handleSort(field)}
+            style={{
+                display: 'flex', alignItems: 'center', gap: '0.2rem', padding: '0.35rem 0.6rem',
+                background: sortField === field ? 'var(--primary)' : 'var(--bg-secondary)',
+                border: '1px solid var(--glass-border)',
+                borderRadius: '8px',
+                color: sortField === field ? 'white' : 'var(--text-secondary)',
+                fontSize: '0.7rem', fontWeight: 600, cursor: 'pointer',
+                transition: 'all 0.2s'
+            }}>
+            {label} {sortField === field && <ArrowUpDown size={12} style={{ transform: sortDirection === 'desc' ? 'rotate(180deg)' : 'none' }} />}
         </button>
     );
 
     return (
-        <div className={styles.appContainer}>
+        <div className={styles.appContainer} style={{ background: 'var(--bg-primary)', display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}>
+            {/* Stats Bar */}
             {stats && (
-                <div className={styles.statsGrid} style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
-                    <div className={styles.statItem}><DollarSign size={14} color="var(--primary)" /><span className={styles.statValue} style={{ fontSize: '0.85rem' }}>{formatMCap(stats.totalMCap)}</span><span className={styles.statLabel}>Total MCap</span></div>
-                    <div className={styles.statItem}><TrendingUp size={14} color="var(--accent-green)" /><span className={styles.statValue} style={{ fontSize: '0.85rem' }}>{stats.gainers}/{cryptos?.length}</span><span className={styles.statLabel}>Gainers</span></div>
-                    <div className={styles.statItem}><Activity size={14} color={stats.avgChange >= 0 ? 'var(--accent-green)' : 'var(--accent-red)'} /><span className={styles.statValue} style={{ fontSize: '0.85rem', color: stats.avgChange >= 0 ? 'var(--accent-green)' : 'var(--accent-red)' }}>{stats.avgChange >= 0 ? '+' : ''}{stats.avgChange.toFixed(2)}%</span><span className={styles.statLabel}>Avg 24h</span></div>
+                <div style={{
+                    display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '0.5rem',
+                    marginBottom: '1rem', padding: '0.75rem',
+                    background: 'var(--bg-secondary)', borderRadius: '12px', border: '1px solid var(--glass-border)',
+                    flexShrink: 0
+                }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--text-tertiary)', fontSize: '0.7rem' }}>
+                            <DollarSign size={12} /> Total MCap
+                        </div>
+                        <span style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-primary)' }}>{formatMCap(stats.totalMCap)}</span>
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--text-tertiary)', fontSize: '0.7rem' }}>
+                            <TrendingUp size={12} /> Gainers
+                        </div>
+                        <span style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--accent-green)' }}>{stats.gainers}/{cryptos?.length}</span>
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', color: 'var(--text-tertiary)', fontSize: '0.7rem' }}>
+                            <Activity size={12} /> Avg 24h
+                        </div>
+                        <span style={{ fontSize: '0.9rem', fontWeight: 700, color: stats.avgChange >= 0 ? 'var(--accent-green)' : 'var(--accent-red)' }}>
+                            {stats.avgChange >= 0 ? '+' : ''}{stats.avgChange.toFixed(2)}%
+                        </span>
+                    </div>
                 </div>
             )}
 
-            <div className={styles.cryptoHeader}>
-                <div className={styles.searchWrapper} style={{ flex: 1 }}><input type="text" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} placeholder="Search..." className={styles.searchInput} style={{ paddingLeft: '1rem' }} /></div>
-                <button onClick={() => setShowWatchlistOnly(!showWatchlistOnly)} className={styles.refreshBtn} style={{ background: showWatchlistOnly ? 'var(--gradient-primary)' : undefined, color: showWatchlistOnly ? 'white' : undefined, borderColor: showWatchlistOnly ? 'transparent' : undefined }}><Star size={18} fill={showWatchlistOnly ? 'currentColor' : 'none'} /></button>
-                <button onClick={handleRefresh} className={`${styles.refreshBtn} ${isRefreshing ? styles.spinning : ''}`}><RefreshCw size={18} /></button>
+            {/* Controls */}
+            <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.75rem', flexShrink: 0 }}>
+                <div style={{ position: 'relative', flex: 1 }}>
+                    <Search size={16} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-tertiary)' }} />
+                    <input
+                        type="text"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        placeholder="Search coin..."
+                        style={{
+                            width: '100%', padding: '0.6rem 1rem 0.6rem 2.2rem',
+                            background: 'var(--bg-secondary)', border: '1px solid var(--glass-border)',
+                            borderRadius: '10px', fontSize: '0.9rem', color: 'var(--text-primary)', outline: 'none'
+                        }}
+                    />
+                </div>
+                <button onClick={() => setShowWatchlistOnly(!showWatchlistOnly)} style={{
+                    padding: '0.6rem', borderRadius: '10px', border: '1px solid var(--glass-border)', cursor: 'pointer',
+                    background: showWatchlistOnly ? 'var(--primary)' : 'var(--bg-secondary)',
+                    color: showWatchlistOnly ? 'white' : 'var(--text-secondary)',
+                    flexShrink: 0
+                }}>
+                    <Star size={18} fill={showWatchlistOnly ? 'currentColor' : 'none'} />
+                </button>
+                <button onClick={handleRefresh} className={isRefreshing ? styles.spinning : ''} style={{
+                    padding: '0.6rem', borderRadius: '10px', border: '1px solid var(--glass-border)', cursor: 'pointer',
+                    background: 'var(--bg-secondary)', color: 'var(--text-secondary)',
+                    flexShrink: 0
+                }}>
+                    <RefreshCw size={18} />
+                </button>
             </div>
 
-            <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap' }}>
-                <span style={{ color: 'var(--text-tertiary)', fontSize: '0.65rem', alignSelf: 'center' }}>Sort:</span>
-                <SortBtn field="rank" label="Rank" /><SortBtn field="price" label="Price" /><SortBtn field="change_24h" label="24h" /><SortBtn field="market_cap" label="MCap" />
+            {/* Sort Buttons - Better Scroll */}
+            <div style={{
+                display: 'flex', gap: '0.5rem', overflowX: 'auto', paddingBottom: '0.75rem', marginBottom: '0.25rem',
+                flexShrink: 0, scrollbarWidth: 'none', paddingRight: '1rem' // Added padding right
+            }}>
+                <SortBtn field="rank" label="Rank" />
+                <SortBtn field="price" label="Price" />
+                <SortBtn field="change_24h" label="24h Change" />
+                <SortBtn field="market_cap" label="Market Cap" />
             </div>
 
             {loading && !cryptos ? (
-                <div className={styles.loading}><div className={styles.spinner} /><p>Loading...</p></div>
+                <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: '1rem', color: 'var(--text-tertiary)' }}>
+                    <div className={styles.spinner} />
+                    <p>Fetching market data...</p>
+                </div>
             ) : error ? (
-                <div className={styles.error}><div className={styles.errorIcon}><AlertCircle size={28} color="white" /></div><p>Failed to load</p><button onClick={execute} className={styles.actionBtn}><RefreshCw size={14} /> Retry</button></div>
+                <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: '1rem', color: 'var(--accent-red)' }}>
+                    <AlertCircle size={32} />
+                    <p>Failed to load data</p>
+                    <button onClick={execute} style={{ padding: '0.5rem 1rem', background: 'var(--bg-secondary)', border: '1px solid var(--glass-border)', borderRadius: '8px', cursor: 'pointer' }}>Retry</button>
+                </div>
             ) : (
-                <>
-                    <div className={styles.cryptoList}>
-                        {filteredCryptos.map((c) => (
-                            <div key={c.id} className={styles.cryptoItem} style={{ borderColor: watchlist.includes(c.id) ? 'var(--primary)' : undefined }}>
-                                <button onClick={() => toggleWatchlist(c.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '0.2rem', color: watchlist.includes(c.id) ? 'var(--accent-yellow)' : 'var(--text-tertiary)' }}><Star size={14} fill={watchlist.includes(c.id) ? 'currentColor' : 'none'} /></button>
-                                <span className={styles.cryptoRank}>#{c.market_cap_rank}</span>
-                                <img src={c.image} alt={c.name} className={styles.cryptoLogo} loading="lazy" />
-                                <div className={styles.cryptoInfo}><span className={styles.cryptoName}>{c.name}</span><span className={styles.cryptoSymbol}>{c.symbol}</span></div>
-                                <div style={{ width: '50px', height: '20px', borderRadius: '4px', overflow: 'hidden', background: c.price_change_percentage_24h >= 0 ? 'rgba(34,197,94,0.1)' : 'rgba(239,68,68,0.1)' }}>
-                                    <svg width="50" height="20" viewBox="0 0 50 20"><path d={c.price_change_percentage_24h >= 0 ? 'M0,15 L12,12 L25,8 L38,10 L50,5' : 'M0,5 L12,8 L25,12 L38,10 L50,15'} fill="none" stroke={c.price_change_percentage_24h >= 0 ? '#22c55e' : '#ef4444'} strokeWidth="1.5" /></svg>
-                                </div>
-                                <div style={{ textAlign: 'right', minWidth: '60px' }}><span style={{ fontSize: '0.65rem', color: 'var(--text-tertiary)' }}>MCap</span><span style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', fontWeight: 600, display: 'block' }}>{formatMCap(c.market_cap)}</span></div>
-                                <div className={styles.cryptoPrice}><span className={styles.priceValue}>{formatPrice(c.current_price)}</span><span className={`${styles.priceChange} ${c.price_change_percentage_24h >= 0 ? styles.positive : styles.negative}`}>{c.price_change_percentage_24h >= 0 ? <TrendingUp size={12} /> : <TrendingDown size={12} />}{Math.abs(c.price_change_percentage_24h).toFixed(2)}%</span></div>
+                <div style={{
+                    flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '0.5rem',
+                    paddingRight: '6px', paddingBottom: '1rem' // Added padding bottom
+                }}>
+                    {filteredCryptos.map((c) => (
+                        <div
+                            key={c.id}
+                            onClick={() => handleItemClick(c.id)}
+                            style={{
+                                display: 'grid',
+                                gridTemplateColumns: '24px 32px 1fr 60px 80px 24px', // Fixed grid layout
+                                alignItems: 'center',
+                                gap: '0.5rem',
+                                padding: '0.75rem 0.5rem',
+                                background: 'var(--bg-secondary)',
+                                borderRadius: '12px',
+                                border: '1px solid var(--glass-border)',
+                                cursor: 'pointer',
+                                position: 'relative',
+                                minWidth: '320px' // Ensure minimum width so internal elements don't crush
+                            }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.background = 'var(--bg-tertiary)';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.background = 'var(--bg-secondary)';
+                            }}
+                        >
+                            <div style={{ fontSize: '0.75rem', color: 'var(--text-tertiary)', textAlign: 'center' }}>
+                                #{c.market_cap_rank}
                             </div>
-                        ))}
-                    </div>
-                    {filteredCryptos.length === 0 && <div className={styles.emptyState}><div className={styles.emptyIcon}>{showWatchlistOnly ? <Star size={36} color="var(--primary)" /> : <Search size={36} color="var(--primary)" />}</div><p>{showWatchlistOnly ? 'Empty watchlist' : 'No results'}</p></div>}
-                    <div className={styles.footer}>Showing {filteredCryptos.length} of {cryptos?.length || 0} • {watchlist.length} watchlisted</div>
-                </>
+
+                            <img src={c.image} alt={c.name} style={{ width: '32px', height: '32px', borderRadius: '50%' }} />
+
+                            <div style={{ minWidth: 0, paddingRight: '0.5rem' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                                    <span style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--text-primary)' }}>{c.symbol.toUpperCase()}</span>
+                                    {watchlist.includes(c.id) && <Star size={10} fill="var(--accent-yellow)" color="var(--accent-yellow)" />}
+                                </div>
+                                <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', display: 'block' }}>
+                                    {c.name}
+                                </span>
+                            </div>
+
+                            {/* Mini Chart */}
+                            <div style={{ width: '100%', height: '20px', display: 'flex', alignItems: 'center' }}>
+                                <div style={{
+                                    width: '100%', height: '4px', background: 'var(--glass-border)', borderRadius: '2px', overflow: 'hidden',
+                                    display: 'flex', opacity: 0.7
+                                }}>
+                                    <div style={{
+                                        width: `${Math.min(Math.abs(c.price_change_percentage_24h) * 5, 100)}%`,
+                                        background: c.price_change_percentage_24h >= 0 ? 'var(--accent-green)' : 'var(--accent-red)',
+                                        marginLeft: c.price_change_percentage_24h < 0 ? 'auto' : 0
+                                    }} />
+                                </div>
+                            </div>
+
+                            <div style={{ textAlign: 'right' }}>
+                                <div style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--text-primary)' }}>
+                                    {c.current_price >= 1000 ? `$${(c.current_price / 1000).toFixed(1)}k` : formatPrice(c.current_price)}
+                                </div>
+                                <div style={{
+                                    fontSize: '0.7rem', fontWeight: 600,
+                                    color: c.price_change_percentage_24h >= 0 ? 'var(--accent-green)' : 'var(--accent-red)',
+                                    display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '2px'
+                                }}>
+                                    {c.price_change_percentage_24h >= 0 ? <TrendingUp size={10} /> : <TrendingDown size={10} />}
+                                    {Math.abs(c.price_change_percentage_24h).toFixed(1)}%
+                                </div>
+                            </div>
+
+                            {/* Watchlist Action */}
+                            <button
+                                onClick={(e) => toggleWatchlist(e, c.id)}
+                                style={{
+                                    padding: '0.2rem', background: 'transparent', border: 'none', cursor: 'pointer',
+                                    color: watchlist.includes(c.id) ? 'var(--accent-yellow)' : 'var(--glass-border)',
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center'
+                                }}
+                            >
+                                <Star size={18} fill={watchlist.includes(c.id) ? 'currentColor' : 'none'} />
+                            </button>
+                        </div>
+                    ))}
+                    {filteredCryptos.length === 0 && (
+                        <div style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-tertiary)' }}>
+                            <p>No coins found.</p>
+                        </div>
+                    )}
+                </div>
             )}
+
+            {/* Footer Tip */}
+            <div style={{
+                marginTop: 'auto', padding: '0.5rem',
+                textAlign: 'center', fontSize: '0.7rem', color: 'var(--text-tertiary)',
+                borderTop: '1px solid var(--glass-border)', flexShrink: 0
+            }}>
+                Click for details on CoinGecko <ExternalLink size={8} style={{ display: 'inline' }} />
+            </div>
         </div>
     );
 }

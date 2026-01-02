@@ -36,7 +36,7 @@ export default function Home() {
             </div>
 
             <h1 className={styles.heroTitle}>
-              <span className={styles.heroHighlight}>{state.filteredApps.length}+</span> Apps
+              <span className={styles.heroHighlight}>Super</span> Apps
               <span className={styles.heroSubtitle}>One Platform</span>
             </h1>
 
@@ -50,8 +50,8 @@ export default function Home() {
                   <Rocket size={20} color="#06b6d4" />
                 </div>
                 <div className={styles.statInfo}>
-                  <span className={styles.statValue}>{state.filteredApps.length}</span>
-                  <span className={styles.statLabel}>Apps</span>
+                  <span className={styles.statValue}>Boost</span>
+                  <span className={styles.statLabel}>Focus</span>
                 </div>
               </div>
               <div className={styles.stat}>
@@ -59,8 +59,8 @@ export default function Home() {
                   <Zap size={20} color="#f59e0b" />
                 </div>
                 <div className={styles.statInfo}>
-                  <span className={styles.statValue}>Free</span>
-                  <span className={styles.statLabel}>Forever</span>
+                  <span className={styles.statValue}>Stay</span>
+                  <span className={styles.statLabel}>Updated</span>
                 </div>
               </div>
               <div className={styles.stat}>
@@ -68,8 +68,8 @@ export default function Home() {
                   <Sparkles size={20} color="#ec4899" />
                 </div>
                 <div className={styles.statInfo}>
-                  <span className={styles.statValue}>0</span>
-                  <span className={styles.statLabel}>Ads</span>
+                  <span className={styles.statValue}>Discover</span>
+                  <span className={styles.statLabel}>More</span>
                 </div>
               </div>
             </div>
