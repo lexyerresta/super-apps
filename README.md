@@ -80,7 +80,7 @@ super-apps/
 ├── src/
 │   ├── app/                    # Next.js App Router
 │   ├── components/
-│   │   ├── apps/              # 39 Mini Apps
+│   │   ├── apps/              # 14 Super Apps
 │   │   ├── layout/            # Header, Footer
 │   │   └── ui/                # Reusable Components
 │   ├── config/                # App Configuration
@@ -92,27 +92,24 @@ super-apps/
 
 ## API Services Used
 
-All apps use FREE open-source APIs:
+All apps use FREE open-source & public APIs:
 
-- GNews API - News headlines
-- OMDB API - Movies & TV shows
-- Open Library API - Books data
-- Wikipedia API - Article search
-- Reddit JSON API - Reddit posts
-- Free Dictionary API - Word definitions
-- REST Countries API - Country information
-- Quotable API - Inspirational quotes
-- Fake Store API - Product data
-- OpenWeather API - Weather forecasts
-- CoinGecko API - Cryptocurrency prices
-- Exchange Rate API - Currency rates
-- NPM Registry API - Package search
-- GitHub API - User & repo search
-- ipapi.co - IP information
-- Dog API - Random dog images
-- Cat Facts API - Cat facts
-- PokeAPI - Pokemon data
-- Trivia API - Quiz questions
+- **GNews API** - Real-time news headlines
+- **TMDB API** - Movie & TV show database (via proxy/client)
+- **Open Library API** - Book metadata and covers
+- **Wikipedia API** - Article summaries and search
+- **DEV Community API** - Tech articles and resources
+- **Free Dictionary API** - Definitions and phonetics
+- **REST Countries API** - Global country data
+- **Quotable API** - Inspirational quotes
+- **Open-Meteo API** - Weather forecasts (No key required)
+- **CoinGecko API** - Cryptocurrency market data
+- **Frankfurter API** - Currency exchange rates
+- **NPP Registry** - NPM package search
+- **GitHub API** - User and repository search
+- **JokeAPI** - Programming & general jokes
+- **Open Trivia DB** - Quiz questions
+- **PokeAPI** - Pokémon data
 
 ## Deployment
 
