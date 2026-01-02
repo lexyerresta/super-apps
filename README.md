@@ -107,9 +107,6 @@ All apps use FREE open-source & public APIs:
 - **Frankfurter API** - Currency exchange rates
 - **NPP Registry** - NPM package search
 - **GitHub API** - User and repository search
-- **JokeAPI** - Programming & general jokes
-- **Open Trivia DB** - Quiz questions
-- **PokeAPI** - Pokémon data
 
 ## Deployment
 
