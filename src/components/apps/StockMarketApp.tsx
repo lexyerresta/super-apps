@@ -7,11 +7,12 @@ export default function StockMarketApp() {
     const [stocks, setStocks] = useState<any[]>([]);
     const [loading, setLoading] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
+    const [dataSource, setDataSource] = useState<'live' | 'simulated'>('live');
 
     // Common stocks to display
     const symbols = ['AAPL', 'GOOGL', 'MSFT', 'AMZN', 'TSLA', 'META', 'NVDA', 'JPM', 'NFLX', 'AMD', 'INTC', 'DIS'];
 
-    // Finnhub API Key (Public Sandbox/Free Tier)
+    // Finnhub API Key (Public Sandbox/Free Tier) - Fallback keys could be added
     const API_KEY = 'cj0v19pr01qg4t1u8b90cj0v19pr01qg4t1u8b9g';
 
     const getStockName = (symbol: string) => {
@@ -32,43 +33,72 @@ export default function StockMarketApp() {
         return names[symbol] || symbol;
     };
 
+    const getMockData = () => {
+        return symbols.map(symbol => {
+            const basePrice = Math.random() * 800 + 50;
+            const change = (Math.random() * 10 - 5);
+            const changePercent = (Math.random() * 5 - 2.5);
+            return {
+                symbol,
+                name: getStockName(symbol),
+                price: basePrice.toFixed(2),
+                change: change.toFixed(2),
+                changePercent: changePercent.toFixed(2),
+                volume: 0,
+                high: (basePrice + 5).toFixed(2),
+                low: (basePrice - 5).toFixed(2),
+                previousClose: basePrice
+            };
+        });
+    };
+
     const fetchStocks = async () => {
         setLoading(true);
+        let hasRealData = false;
+
         try {
             // Fetch real data from Finnhub for each symbol
             const requests = symbols.map(async (symbol) => {
                 try {
                     const response = await fetch(`https://finnhub.io/api/v1/quote?symbol=${symbol}&token=${API_KEY}`);
+                    if (!response.ok) throw new Error('Network response was not ok');
                     const data = await response.json();
 
-                    // Finnhub returns: c: Current price, d: Change, dp: Percent change, h: High, l: Low, o: Open, pc: Previous close
+                    // Check if data is valid (Finnhub returns 0s if invalid/limit)
+                    if (data.c === 0 && data.h === 0) return null;
+
                     return {
                         symbol,
                         name: getStockName(symbol),
-                        price: data.c ? data.c.toFixed(2) : '0.00',
-                        change: data.d ? data.d.toFixed(2) : '0.00',
-                        changePercent: data.dp ? data.dp.toFixed(2) : '0.00',
-                        volume: 0, // Volume not available in free quote endpoint
-                        high: data.h ? data.h.toFixed(2) : '0.00',
-                        low: data.l ? data.l.toFixed(2) : '0.00',
+                        price: data.c.toFixed(2),
+                        change: data.d.toFixed(2),
+                        changePercent: data.dp.toFixed(2),
+                        volume: 0,
+                        high: data.h.toFixed(2),
+                        low: data.l.toFixed(2),
                         previousClose: data.pc
                     };
                 } catch (err) {
-                    console.error(`Failed to fetch ${symbol}`, err);
                     return null;
                 }
             });
 
             const results = await Promise.all(requests);
+            const validStocks = results.filter(stock => stock !== null);
 
-            // Filter out failed requests (nulls)
-            const validStocks = results.filter(stock => stock !== null && stock.price !== '0.00');
-
-            if (validStocks.length > 0) {
+            if (validStocks.length > 3) { // If we got a decent amount of real data
                 setStocks(validStocks);
+                setDataSource('live');
+                hasRealData = true;
+            } else {
+                console.warn('API limit reached or failed. Switching to simulated data.');
+                throw new Error('Insufficient real data');
             }
+
         } catch (error) {
-            console.error('Error fetching stock data:', error);
+            // Fallback to simulation
+            setStocks(getMockData());
+            setDataSource('simulated');
         } finally {
             setLoading(false);
         }
@@ -102,10 +132,16 @@ export default function StockMarketApp() {
             }}>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px' }}>
                     <div style={{ fontSize: '0.7rem', color: 'var(--text-tertiary)', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                        <Activity size={12} /> Nasdaq
+                        <Activity size={12} /> Status
                     </div>
-                    <span style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--accent-green)' }}>+1.24%</span>
+                    <span style={{
+                        fontSize: '0.8rem', fontWeight: 700,
+                        color: dataSource === 'live' ? 'var(--accent-green)' : 'var(--accent-orange)'
+                    }}>
+                        {dataSource === 'live' ? 'LIVE DATA' : 'DEMO MODE'}
+                    </span>
                 </div>
+                {/* Simulated Market Index for visual balance */}
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '2px' }}>
                     <div style={{ fontSize: '0.7rem', color: 'var(--text-tertiary)', display: 'flex', alignItems: 'center', gap: '4px' }}>
                         <BarChart2 size={12} /> S&P 500
