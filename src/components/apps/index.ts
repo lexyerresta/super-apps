@@ -1,4 +1,6 @@
-// App Components
+// App Components Export Barrel
+// Only active apps should be exported here
+
 export { default as NewsApp } from './NewsApp';
 export { default as MovieDatabaseApp } from './MovieDatabaseApp';
 export { default as BookSearchApp } from './BookSearchApp';
@@ -7,34 +9,8 @@ export { default as DevCommunityApp } from './DevCommunityApp';
 export { default as DictionaryApp } from './DictionaryApp';
 export { default as CountriesApp } from './CountriesApp';
 export { default as QuotesApp } from './QuotesApp';
-export { default as ProductSearchApp } from './ProductSearchApp';
 export { default as WeatherApp } from './WeatherApp';
 export { default as CryptoApp } from './CryptoApp';
-export { default as StockMarketApp } from './StockMarketApp';
 export { default as CurrencyApp } from './CurrencyApp';
 export { default as NPMSearchApp } from './NPMSearchApp';
-export { default as APITesterApp } from './APITesterApp';
 export { default as GitHubApp } from './GitHubApp';
-export { default as JWTDecoderApp } from './JWTDecoderApp';
-export { default as TimestampConverterApp } from './TimestampConverterApp';
-export { default as Base64App } from './Base64App';
-export { default as JsonFormatterApp } from './JsonFormatterApp';
-export { default as HashGeneratorApp } from './HashGeneratorApp';
-export { default as UUIDGeneratorApp } from './UUIDGeneratorApp';
-export { default as ImageConverterApp } from './ImageConverterApp';
-export { default as AudioConverterApp } from './AudioConverterApp';
-export { default as VideoConverterApp } from './VideoConverterApp';
-export { default as DocumentConverterApp } from './DocumentConverterApp';
-export { default as PDFToolsApp } from './PDFToolsApp';
-export { default as TodoListApp } from './TodoListApp';
-export { default as ExpenseTrackerApp } from './ExpenseTrackerApp';
-export { default as NotesApp } from './NotesApp';
-export { default as JokesApp } from './JokesApp';
-export { default as CatFactsApp } from './CatFactsApp';
-export { default as DogGalleryApp } from './DogGalleryApp';
-export { default as TriviaApp } from './TriviaApp';
-export { default as PokemonApp } from './PokemonApp';
-export { default as PasswordGeneratorApp } from './PasswordGeneratorApp';
-export { default as QRCodeApp } from './QRCodeApp';
-export { default as IPInfoApp } from './IPInfoApp';
-export { default as RegexTesterApp } from './RegexTesterApp';
